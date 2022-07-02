@@ -1,18 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const initialState = {
+  status: "not-authenticated", //"checking", not-authenticated, authenticated
+  uid: null,
+  email: null,
+  displayName: null,
+  photoURL: null,
+  errorMessage: null,
+};
+
 export const authSlice = createSlice({
   name: "auth",
-  initialState: {
-    status: "not-authenticated", //"checking", not-authenticated, authenticated
-    uid: null,
-    email: null,
-    displayName: null,
-    photoURL: null,
-    errorMessage: null,
-  },
+  initialState,
   reducers: {
-    login: (state, action) => {},
-    logout: (state, payload) => {},
+    login: (state, { payload }) => {
+      state.status = "authenticated";
+      state.uid = payload.uid;
+      state.email = payload.email;
+      state.displayName = payload.displayName;
+      state.photoURL = payload.photoURL;
+    },
+    logout: (state, { payload }) => {
+      state = initialState;
+      state.errorMessage = payload.errorMessage;
+    },
     checkingCredentials: (state) => {
       state.status = "checking";
     },
